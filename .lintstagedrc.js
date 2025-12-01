@@ -1,15 +1,16 @@
 const path = require("path");
 
-const buildNextEslintCommand = (filenames) =>
-  `yarn next:lint --fix --file ${filenames
-    .map((f) => path.relative(path.join("packages", "nextjs"), f))
+const buildNextEslintCommand = filenames =>
+  `pnpm --filter @se-2/nextjs exec next lint --fix --file ${filenames
+    .map(f => path.relative(path.join("packages", "nextjs"), f))
     .join(" --file ")}`;
 
-const checkTypesNextCommand = () => "yarn next:check-types";
+const checkTypesNextCommand = () =>
+  "pnpm --filter @se-2/nextjs run check-types";
 
-const buildHardhatEslintCommand = (filenames) =>
-  `yarn hardhat:lint-staged --fix ${filenames
-    .map((f) => path.relative(path.join("packages", "hardhat"), f))
+const buildHardhatEslintCommand = filenames =>
+  `pnpm --filter @se-2/hardhat exec eslint --fix ${filenames
+    .map(f => path.relative(path.join("packages", "hardhat"), f))
     .join(" ")}`;
 
 module.exports = {
