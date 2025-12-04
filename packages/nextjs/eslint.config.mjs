@@ -1,26 +1,16 @@
-import { FlatCompat } from "@eslint/eslintrc";
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
 import prettierPlugin from "eslint-plugin-prettier";
-import { defineConfig } from "eslint/config";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-export default defineConfig([
+const eslintConfig = defineConfig([
+  ...nextVitals,
   {
     plugins: {
       prettier: prettierPlugin,
     },
-    extends: compat.extends("next/core-web-vitals", "next/typescript", "prettier"),
-
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/ban-ts-comment": "off",
-
       "prettier/prettier": [
         "warn",
         {
@@ -29,4 +19,14 @@ export default defineConfig([
       ],
     },
   },
+  // Override default ignores of eslint-config-next.
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
 ]);
+
+export default eslintConfig;
