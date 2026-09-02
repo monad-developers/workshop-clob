@@ -203,7 +203,7 @@ The frontend (`scaffold.config.ts`) and the committed `deployments/10143.json` b
    yarn account:import       # import an existing private key
    ```
 
-   Then set `ETH_KEYSTORE_ACCOUNT=scaffold-eth-custom` in `packages/foundry/.env` (or pass `--keystore <name>` to `yarn deploy`) and fund the address with MON. `yarn deploy` refuses to use the default anvil key on a live network.
+   Then pass `--keystore <name>` to `yarn deploy` and fund that account with MON. `yarn deploy` refuses to use the default anvil key on a live network.
 
 2. For mainnet, add the endpoint to `[rpc_endpoints]` in `packages/foundry/foundry.toml`:
 
@@ -216,11 +216,11 @@ The frontend (`scaffold.config.ts`) and the committed `deployments/10143.json` b
 3. Edit the mint recipient in `script/DeployYourContract.s.sol` to your own address, then deploy:
 
    ```bash
-   yarn deploy --network monad          # mainnet, after step 2
-   yarn deploy --network monadTestnet   # testnet
+   yarn deploy --network monad --keystore <name>          # mainnet, after step 2
+   yarn deploy --network monadTestnet --keystore <name>   # testnet
    ```
 
-   This runs `forge script script/Deploy.s.sol --rpc-url <network> --broadcast --legacy --ffi` with your keystore and regenerates the frontend ABIs. Deploy order is `BTC`, `USDC`, then `CLOB(btc, usdc)`.
+   This runs `forge script script/Deploy.s.sol --rpc-url <network> --broadcast --legacy --ffi` with the keystore you named and regenerates the frontend ABIs. If you omit `--keystore` on a live network, the wrapper opens an interactive keystore picker, so always pass it in scripts and CI. Deploy order is `BTC`, `USDC`, then `CLOB(btc, usdc)`.
 
    Without the Yarn wrapper, the equivalent is:
 
