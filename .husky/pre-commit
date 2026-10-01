@@ -1,1 +1,1 @@
-yarn lint-staged --verbose
+pnpm lint-staged --verbose
